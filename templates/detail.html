@@ -1,0 +1,99 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+    <div class="row">
+        <div class="col-md-10 offset-md-2">
+            <div class="col-lg-8">
+                <article>
+                    <!-- Post header-->
+                    <header class="mb-4">
+                        <!-- Post title-->
+                        <h3 class="fw-bolder mb-2" style="color: darkblue">{{ article.title }}</h3>
+                        <p class="lead" style="font-size: 14px;color:#ff7171;">{{ article.author }} tarafından
+                            yayınlandı.</p>
+                        <!-- Post meta <content-->
+                        <hr>
+                        <div class="text-muted fst-italic mb-2">Oluşturulma tarihi: {{ article.created_date }}</div>
+                        <hr>
+                    </header>
+                    <!-- Preview image figure-->
+
+                    {% if article.article_image %}
+                        <img class="img-fluid rounded" src="{{ article.article_image.url }}" alt="...">
+                    {% endif %}
+
+                    <hr>
+                    <!-- Post content-->
+                    <section class="mb-5">
+                        <p class="lead" style="color: darkcyan;opacity:0.9;">{{ article.content|safe }}</p>
+                    </section>
+                    <hr>
+
+                </article>
+
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="row">
+        <div class="col-md-10 offset-md-2">
+            <div class="col-lg-8">
+
+                {% if comments %}
+                    <div style="text-align: center"><h3>YORUMLAR</h3></div>
+                    <hr><br>
+                    {% for comment in comments %}
+                        <div class="d-flex">
+                            <div class="flex-shrink-0"
+                                 style="width: 10px;height: 10px;background-color: chocolate;margin:20px">
+                            </div>
+                            <div class="ms-3">
+                                <div class="fw-bold"
+                                     style="text-transform:capitalize;color: #646161;display: inline-block;font-weight:bold;
+                                     font-size: 15px">{{ comment.comment_author }}</div>
+                                <br>
+                                <div style="font-size: 12px;text-transform:capitalize;opacity: 0.7">{{ comment.comment_date }}<br><br>
+                                    {{ comment.comment_content }}
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                    {% endfor %}
+
+                {% else %}
+
+                    <div class="alert alert-danger">Bu makaleye henüz bir yorum yapılmamış, ilk yorum yapan siz olun!
+                    </div>
+
+                {% endif %}
+                <br>
+
+                <form method="post" action="{% url 'article:comment' article.id %}">
+                    {% csrf_token %}
+                    <h3>Yorum Alanı</h3><br>
+
+                    <div class="row">
+
+                        <div class="form-group" style="margin-left:15px">
+                            <label for="formGroupExampleInput">İsim</label>
+                            <input name="comment_author" type="text" class="form-control" id="formGroupExampleInput"
+                                   placeholder="İsminizi giriniz.">
+                        </div>
+
+                        <div class="form-group col-xs-12 col-sm-9 col-lg-10">
+                            <label for="formGroupExampleInput">Yorum</label>
+                            <textarea name="comment_content" class="form-control" rows="3"></textarea>
+                        </div>
+
+                    </div>
+
+                    <button type="submit" class="btn btn-success">Gönder</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <br><br><br>
+{% endblock %}

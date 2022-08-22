@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+    <div class="jumbotron text-center">
+        <h3>Bloğumuza hoşgeldiniz!</h3>
+        <p>Bu blogta geliştiriciler olarak blog yazılırınızı paylaşabilirsiniz.</p>
+    </div>
+
+    {% if request.user.is_authenticated %}
+        <p>
+            Hoşgeldiniz, <small style="color: crimson;font-weight:bold;">{{ request.user }}</small>
+        </p>
+    {% endif %}
+
+{% endblock %}

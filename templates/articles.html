@@ -1,0 +1,82 @@
+{% extends "layout.html" %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-10 offset-md-3">
+            <div class="col-lg-8">
+                <h3>Makaleler</h3>
+                <hr>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-md-10 offset-md-3">
+            <div class="col-lg-8">
+                <form>
+                    {% csrf_token %}
+                    <input type="text" name="keyword" class="input-sm" maxlength="64" placeholder="Ara">
+                    <button type="submit" class="btn btn-success ">Ara</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <br>
+    {% if articles %}
+        {% for article in articles %}
+            <div class="row">
+                <div class="col-md-10 offset-md-3">
+                    <!-- Post content-->
+                    <div class="col-lg-8">
+                        <article>
+                            <!-- Post header-->
+                            <header class="mb-4">
+                                <!-- Post title-->
+                                <a style="text-decoration: none" href="{% url 'article:detail' article.id %}"><h3 class="fw-bolder mb-2"
+                                                                                 style="color: darkblue">{{ article.title }}</h3>
+                                </a>
+                                <p class="lead" style="font-size: 14px;color: #ff7171">{{ article.author }}
+                                    tarafından
+                                    yayınlandı.</p>
+                                <!-- Post meta <content-->
+                                <hr>
+                                <div class="text-muted fst-italic mb-2">Oluşturulma
+                                    tarihi: {{ article.created_date }}</div>
+                                <hr>
+                            </header>
+                            <!-- Preview image figure-->
+
+                            {% if article.article_image %}
+                                <img class="img-fluid rounded" src="{{ article.article_image.url }}" alt="...">
+                            {% endif %}
+
+                            <hr>
+                            <!-- Post content-->
+                            <section class="mb-5">
+                                <p class="lead"
+                                   style="color: darkcyan;opacity:0.9;">{{ article.content|safe|truncatewords:41 }}</p>
+                                <br>
+                                <a href="{% url 'article:detail' article.id %}" class="btn btn-success">Devamını
+                                    oku</a>
+                            </section>
+                            <hr>
+                            <br>
+                            <br>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+
+    {% else %}
+        <div class="row">
+            <div class="col-md-10 offset-md-3">
+                <div class="col-lg-8">
+                    <div class="alert alert-danger">Makale bulunamadı.</div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+{% endblock %}
